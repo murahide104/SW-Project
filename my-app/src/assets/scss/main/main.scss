@@ -1,0 +1,199 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.wrap_login {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    .header {
+        width: 100%;
+        height: 7.5vh;
+        background: #17245A;
+        position: relative;
+
+        .logo {
+            h4 {
+                position: absolute;
+                top: 50%;
+                left: 13.5vh;
+                transform: translate(0, -50%);
+                font-size: 22px;
+                color: #ffffff;
+            }
+        }
+    }
+
+    .login {
+        width: 28%;
+        min-width: 300px;
+        background: #ffffff;
+        // border-radius: 8px;
+        // box-shadow: 0 4px 60px rgba(0, 0, 0, 0.1);
+        min-height: 92.5vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            h2 {
+                font-size: 2em;
+                font-weight: normal;
+                color: #464646;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            p {
+                font-size: 1em;
+                width: 100%;
+                margin: 10px 0 5px;
+                color: #464646;
+            }
+
+            input {
+                width: 100%;
+                padding: 17px 12px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 7px;
+                background-color: #F9FAFB;
+
+                &input::placeholder {
+                    color: #ADADAD;
+                }
+
+                &::-webkit-input-placeholder {
+                    color: #ADADAD;
+                }
+            }
+
+            .password-container {
+                position: relative;
+                width: 100%;
+
+                input {
+                    width: 100%;
+                    padding-right: 40px;
+                }
+
+                .password-toggle-icon {
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+
+                    img {
+                        width: 1em;
+                        height: 1em;
+                        margin-right: 3%;
+                        margin-bottom: 50%
+                    }
+                }
+            }
+
+            .options {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+
+                label {
+                    margin: 2% 0;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    font-size: 1em;
+                    color: #464646;
+                    white-space: nowrap;
+
+                    input {
+                        margin: 0 5px 0 0;
+                    }
+                }
+
+                a {
+                    color: #464646;
+                    text-decoration: none;
+                    font-size: 1em;
+                }
+            }
+
+            button[type="submit"] {
+                width: 100%;
+                padding: 17px;
+                background: #1653ca;
+                color: #ffffff;
+                border: none;
+                border-radius: 7px;
+                cursor: pointer;
+                font-size: 1.2em;
+            }
+
+            .additional-options {
+                width: 100%;
+                text-align: center;
+                margin-top: 20px;
+
+                p {
+                    font-size: 1.1em;
+                    margin: 10px 0;
+                    color: #999999;
+                }
+
+                a {
+                    font-size: 1em;
+                    margin-left: 5px;
+                    color: #1653ca;
+                    text-decoration: none;
+                }
+
+                .or-divider {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin: 20px 0;
+
+                    hr {
+                        width: 200vh;
+                        border: none;
+                        border-top: 1px solid #dbdbdb;
+                    }
+
+                    p {
+                        margin: 0;
+                        padding: 0 10px;
+                        font-size: 1em;
+                        color: #464646;
+                    }
+                }
+
+                .kakao-login {
+                    width: 100%;
+                    padding: 17px;
+                    background: #FEE500;
+                    color: #191919;
+                    border: none;
+                    border-radius: 7px;
+                    cursor: pointer;
+                    font-size: 1.2em;
+                }
+            }
+        }
+    }
+}
