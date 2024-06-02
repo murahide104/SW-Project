@@ -1,0 +1,206 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.app {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    .header {
+        width: 100%;
+        height: 7.5vh;
+        background: #17245A;
+        position: relative;
+    
+        .logo {
+            h4 {
+                position: absolute;
+                top: 50%;
+                left: 13.5vh;
+                transform: translate(0, -50%);
+                font-size: 22px;
+                color: #ffffff;
+            }
+        }
+    }
+    .bulletinboard {
+        width: 62%;
+        min-width: 900px;
+        background: #ffffff;
+        min-height: 92.5vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            h1 {
+                color: #333;
+                text-align: center;
+            }
+            
+            .nav-add {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+                font-size: 1em;
+                color: #999;
+
+                .add-button {
+                    position: relative;
+                    font-size: 1.25em;
+                    font-weight: 150;
+                    padding: 10px 35px 7px 15px;
+                    background-color: #fff;
+                    color: #4E70EC;
+                    border: 1px solid #4E70EC;
+                    cursor: pointer;
+                    border-radius: 8px;
+                    box-shadow: none;
+            
+                    &:hover {
+                        color: #fff;
+                        background-color: #4E70EC
+                    }
+
+                    span {
+                        position: absolute;
+                        top: 5px;
+                        right: 13px;
+                        font-size: 30px;
+                    }
+                }
+            }
+        
+            .table {
+                width: 100%;
+                border-collapse: collapse;
+                color: #666;
+
+                .table1 {
+                    width: 50%;    
+                }
+                .table2 {
+                    width: 20%;    
+                }
+                .table3 {
+                    width: 25%;    
+                }
+
+                th, td {
+                    padding: 8px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd; /* 横線を復活 */
+                }
+
+                th {
+                    background-color: #f2f2f2;
+
+                    .options-button {
+                        margin-left: 60%;
+                        background: none;
+                        border: none;
+                        font-size: 1.3em;
+                        cursor: pointer;
+                    }
+                }
+
+                td:nth-child(2), td:nth-child(3) {
+                    color: #999999; /* 작성자 and 등록일 columns text color */
+                }
+
+                .favorite {
+                    color: #ffb800;
+                }
+            }
+        
+            .searchForm {
+                position: relative;
+                margin-top: 20px;
+                display: flex;
+                justify-content: center; /* searchFormを中央寄せ */
+
+                .searchForm-input {
+                    min-width: 40%;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    padding: 10px;
+                    margin: 5px 0;
+                    border: 1px solid #d2d2d2;
+                    border-radius: 5px;
+                    padding-right: 35px; /* アイコン分のスペースを確保 */
+                }
+            
+                .searchForm-submit {
+                    position: absolute;
+                    width: 20px;
+                    height: 20px;
+                    top: calc(50% - 10px); /* サイズを変更 */
+                    right: 10px;
+                    background: #fff;
+                    border: none;
+                    cursor: pointer;
+            
+                    &::before {
+                        position: absolute;
+                        content: '';
+                        width: 10px; /* サイズを変更 */
+                        height: 10px; /* サイズを変更 */
+                        top: calc(50% - 5px); /* サイズに合わせて調整 */
+                        left: calc(50% - 5px); /* サイズに合わせて調整 */
+                        border-radius: 50%;
+                        box-shadow: 0 0 0 2px #999;
+                    }
+            
+                    &::after {
+                        position: absolute;
+                        content: '';
+                        width: 6px; /* サイズを変更 */
+                        height: 4px; /* サイズを変更 */
+                        top: calc(50% + 3px); /* サイズに合わせて調整 */
+                        left: calc(50% + 1px); /* サイズに合わせて調整 */
+                        border-top: solid 2px #999;
+                        transform: rotate(45deg);
+                    }
+                }
+            }
+        
+            .pagination {
+                margin-top: 20px;
+                text-align: center;
+
+                button {
+                    margin: 0 5px;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    background-color: #fff; /* 背景色を#fffに */
+                    border: none; /* 枠線をなしに */
+                }
+
+                button:not(.active) {
+                    background-color: #fff; /* 背景色を#fffに */
+                    border: 1px solid #d3d3d3; /* 枠線を1pxの#d3d3d3に */
+                }
+
+                .active {
+                    background-color: #4E70EC; /* 背景色を#4E70ECに */
+                    border: 1px solid #4E70EC; /* 枠線の色を#4E70ECに */
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
