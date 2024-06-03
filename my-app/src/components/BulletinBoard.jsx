@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+import html2canvas from 'html2canvas';
 import '../assets/scss/BulletinBoard.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarO } from '@fortawesome/free-regular-svg-icons';
 
 const BulletinBoard = () => {
   const [posts, setPosts] = useState([]);
@@ -7,17 +11,43 @@ const BulletinBoard = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [showForm, setShowForm] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [author, setAuthor] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
   const postsPerPage = 10;
 
   const handleAddPost = () => {
+    setShowForm(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const postElement = document.createElement('div');
+    postElement.style.width = '800px';
+    postElement.style.padding = '20px';
+    postElement.style.border = '1px solid #ddd';
+    postElement.innerHTML = `<h2>${title}</h2><p>${content}</p><p>작성자: ${author}</p>`;
+    
+    document.body.appendChild(postElement);  // 必要に応じて一時的にDOMに追加します
+    const canvas = await html2canvas(postElement, { logging: false, useCORS: true });
+    document.body.removeChild(postElement);  // 描画後に削除します
+
+    const imageData = canvas.toDataURL('image/jpeg');
     const newPost = {
       id: posts.length + 1,
-      title: `Folder01-${posts.length + 1}.jpg`,
-      author: 'BNSystem',
+      title,
+      image: imageData,
+      author,
       date: new Date().toISOString().slice(0, 19).replace('T', ' | '),
       favorite: false,
     };
     setPosts([newPost, ...posts]);
+    setShowForm(false);
+    setTitle('');
+    setContent('');
+    setAuthor('');
   };
 
   const toggleFavorite = (id) => {
@@ -53,7 +83,15 @@ const BulletinBoard = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchTerm(searchInput);
-    setCurrentPage(1); // 検索結果を1ページ目から表示
+    setCurrentPage(1);
+  };
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  const handleCloseImage = () => {
+    setSelectedImage(null);
   };
 
   return (
@@ -72,35 +110,63 @@ const BulletinBoard = () => {
             </nav>
             <button className="add-button" onClick={handleAddPost}>글쓰기<span>+</span></button>
           </div>
-          <table className="table">
-            <thead>
-              <tr>
-                <th className="table1">제목</th>
-                <th className="table2">작성자</th>
-                <th className="table3">
-                  등록일
-                  <button className="options-button">⋮</button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentPosts.map(post => (
-                <tr key={post.id}>
-                  <td>
-                    <span
-                      className={post.favorite ? 'favorite' : ''}
-                      onClick={() => toggleFavorite(post.id)}
-                    >
-                      ☆
-                    </span>
-                    <span className="post-title" onClick={() => alert(`Title: ${post.title}`)}>{post.title}</span>
-                  </td>
-                  <td>{post.author}</td>
-                  <td>{post.date}</td>
+          {showForm && (
+            <div className="post-form">
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  placeholder="제목"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+                <textarea
+                  placeholder="내용"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="작성자"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  required
+                />
+                <button type="submit">작성</button>
+              </form>
+            </div>
+          )}
+          <div className="table-box">
+            <table className="table">
+                <thead>
+                <tr>
+                    <th className="table1">제목</th>
+                    <th className="table2">작성자</th>
+                    <th className="table3">
+                    등록일
+                    <button className="options-button">⋮</button>
+                    </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                {currentPosts.map(post => (
+                    <tr key={post.id}>
+                    <td>
+                        <FontAwesomeIcon
+                          icon={post.favorite ? faStar : faStarO}
+                          onClick={() => toggleFavorite(post.id)}
+                          className={post.favorite ? 'favorite' : ''}
+                        />
+                        <span className="post-title" onClick={() => handleImageClick(post.image)}>{post.title}</span>
+                    </td>
+                    <td>{post.author}</td>
+                    <td>{post.date}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+          </div>
           <form className="searchForm" onSubmit={handleSearch}>
             <input
               className="searchForm-input"
@@ -111,21 +177,35 @@ const BulletinBoard = () => {
             />
             <button className="searchForm-submit" type="submit"></button>
           </form>
-          <div className="pagination">
-            <button onClick={prevPage}>{'<'}</button>
-            {[...Array(Math.ceil(filteredPosts.length / postsPerPage)).keys()].map(number => (
+          <div className="Pagination">
+            <button
+              className="Pagination-Item-Link Pagination-Item-Link-Icon prev"
+              onClick={prevPage}
+              disabled={currentPage === 1}
+            ></button>
+            {[...Array(Math.max(1, Math.ceil(filteredPosts.length / postsPerPage))).keys()].map(number => (
               <button
                 key={number + 1}
                 onClick={() => paginate(number + 1)}
-                className={currentPage === number + 1 ? 'active' : ''}
+                className={`Pagination-Item-Link Pagination-Item-Link-number ${currentPage === number + 1 ? 'isActive' : ''}`}
               >
                 {number + 1}
               </button>
             ))}
-            <button onClick={nextPage}>{'>'}</button>
+            <button
+              className="Pagination-Item-Link Pagination-Item-Link-Icon next"
+              onClick={nextPage}
+              disabled={currentPage === Math.ceil(filteredPosts.length / postsPerPage)}
+            ></button>
           </div>
         </div>
       </div>
+      {selectedImage && (
+        <div className="modal">
+          <span className="close" onClick={handleCloseImage}>&times;</span>
+          <img className="modal-content" src={selectedImage} alt="게시물 이미지" />
+        </div>
+      )}
     </div>
   );
 };
