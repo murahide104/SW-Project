@@ -29,21 +29,27 @@ const BulletinBoard = () => {
     postElement.style.padding = '20px';
     postElement.style.border = '1px solid #ddd';
     postElement.innerHTML = `<h2>${title}</h2><p>${content}</p><p>작성자: ${author}</p>`;
-    
-    document.body.appendChild(postElement);  // 必要に応じて一時的にDOMに追加します
+
+    document.body.appendChild(postElement);
     const canvas = await html2canvas(postElement, { logging: false, useCORS: true });
-    document.body.removeChild(postElement);  // 描画後に削除します
+    document.body.removeChild(postElement);
 
     const imageData = canvas.toDataURL('image/jpeg');
+
+    const koreaStandardTime = new Date();
+    koreaStandardTime.setHours(koreaStandardTime.getHours() + 9);
+
     const newPost = {
       id: posts.length + 1,
       title,
       image: imageData,
       author,
-      date: new Date().toISOString().slice(0, 19).replace('T', ' | '),
+      date: koreaStandardTime.toISOString().slice(0, 19).replace('T', ' | '),
       favorite: false,
     };
-    setPosts([newPost, ...posts]);
+
+    const sortedPosts = [newPost, ...posts].sort((a, b) => b.favorite - a.favorite || new Date(a.date) - new Date(b.date));
+    setPosts(sortedPosts);
     setShowForm(false);
     setTitle('');
     setContent('');
@@ -54,8 +60,8 @@ const BulletinBoard = () => {
     const updatedPosts = posts.map(post =>
       post.id === id ? { ...post, favorite: !post.favorite } : post
     );
-    updatedPosts.sort((a, b) => b.favorite - a.favorite || a.id - b.id);
-    setPosts(updatedPosts);
+    const sortedPosts = updatedPosts.sort((a, b) => b.favorite - a.favorite || new Date(a.date) - new Date(b.date));
+    setPosts(sortedPosts);
   };
 
   const filteredPosts = posts.filter(post =>
